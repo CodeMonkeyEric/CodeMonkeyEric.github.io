@@ -1,2 +1,20 @@
 {
+  "group": [
+    {
+      "name": "catA",
+      "effects": [
+        {
+          "name": "mouth"
+        }
+      ]
+    },
+    {
+      "name": "catB",
+      "effects": [
+        {
+          "name": "mouth"
+        }
+      ]
+    }
+  ]
 }
