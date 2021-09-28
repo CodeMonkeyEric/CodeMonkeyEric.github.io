@@ -1,18 +1,58 @@
 {
   "group": [
     {
-      "name": "catA",
+      "name": {
+        "zh": "Gp 一",
+        "en": "Gp 1"
+      },
       "effects": [
         {
-          "name": "mouth"
+          "name": "mouth11",
+          "src": "mouth11",
+          "thumbnail": "mouth11.png"
+        },
+        {
+          "name": "mouth12",
+          "src": "mouth12",
+          "thumbnail": "mouth12.png"
+        },
+        {
+          "name": "mouth13",
+          "src": "mouth13",
+          "thumbnail": "mouth13.png"
+        },
+        {
+          "name": "mouth14",
+          "src": "mouth14",
+          "thumbnail": "mouth14.png"
         }
       ]
     },
     {
-      "name": "catB",
+      "name": {
+        "zh": "Gp 二",
+        "en": "Gp 2"
+      },
       "effects": [
         {
-          "name": "mouth"
+          "name": "mouth21",
+          "src": "mouth21",
+          "thumbnail": "mouth21.png"
+        },
+        {
+          "name": "mouth22",
+          "src": "mouth22",
+          "thumbnail": "mouth22.png"
+        },
+        {
+          "name": "mouth23",
+          "src": "mouth23",
+          "thumbnail": "mouth23.png"
+        },
+        {
+          "name": "mouth24",
+          "src": "mouth24",
+          "thumbnail": "mouth24.png"
         }
       ]
     }
