@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $( document ).ready(function() {
+                console.log( "ready!" );
+                callSCAA();
+            });
+            // function callSCAA() {
+            //     $.getJSON("response.json", function(json) {
+            //         constructTable(json)
+            //     });
+            // }
+            function getStartDate() {
+                var d = new Date();
+                var month = d.getMonth()+1;
+                var day = d.getDate();
+                var output = d.getFullYear() + '-' + (month<10 ? '0' : '') + month + '-' + (day<10 ? '0' : '') + day + " 08:00:00";
+                console.log(output)
+                return output
+            }
+
+            function getEndDate() {
+                var today = new Date();
+                var target = new Date();
+                target.setDate(today.getDate() + 7);
+                var month = target.getMonth()+1;
+                var day = target.getDate();
+                var output = target.getFullYear() + '-' + (month<10 ? '0' : '') + month + '-' + (day<10 ? '0' : '') + day + " 22:00:00";
+                console.log(output)
+                return output
+            }
+
+            function getDay(dayInt) {
+                switch(dayInt) {
+                case 0:
+                    return "Sun"
+                    break;
+                case 1:
+                    return "Mon"
+                    break;
+                case 2:
+                    return "Tue"
+                    break;
+                case 3:
+                    return "Wed"
+                    break;
+                case 4:
+                    return "Thur"
+                    break;
+                case 5:
+                    return "Fri"
+                    break;
+                case 6:
+                    return "Sat"
+                    break;
+                default:
+                    // code block
+                }
+            }
+
+            function callSCAA() {
+                var requestURL = "https://member.scaa.org.hk/api/facility/clientGetFacilityBookingSummary";
+                var dataJSON = {};
+                dataJSON["facilityIdList"] = [1,2,3,4,5,8,9,21,22,23,24,29,30,31,32];
+                dataJSON["startDateTime"] = getStartDate();
+                dataJSON["endDateTime"] = getEndDate();
+                dataJSON["bookBy"] = "member";
+                
+                $.ajax({
+                    url: requestURL,
+                    data: JSON.stringify(dataJSON),
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success: function(returnData){
+
+                        constructTable(returnData)
+                    },
+                    error: function(xhr, ajaxOptions, thrownError){
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                    }
+                });
+            }
+            function constructTable (data) {
+                
+                var tableBody = ""
+                for (let counter = 0; counter < data.length; counter++) {
+                    let dateData = data[counter]
+                    let facilityBookingDailyTimeSlotDtoList = dateData.facilityBookingDailyTimeSlotDtoList
+                    for (let i = 0; i < facilityBookingDailyTimeSlotDtoList.length; i++) {
+                        let item = facilityBookingDailyTimeSlotDtoList[i]
+                        // console.log(item)
+                        console.log(item.nameTc)
+                        var tRow = ""
+                        tRow += "<tr>"
+                        var d = new Date(dateData.displayDate);
+                        tRow += '<th scope="row">'+dateData.displayDate+ ":: "+ getDay(d.getDay()) +'</th>'    
+                        tRow += '<th scope="row">'+item.nameTc+'</th>'
+                        let timeslotInfoList = item.timeslotInfoList
+                        for (let j = 0; j < timeslotInfoList.length; j++) {
+                            let itemS = timeslotInfoList[j]
+                            console.log(itemS.fee + " :: " + itemS.startDateTime + " :: " + itemS.endDateTime + " :: " + itemS.isFree + " :: ")
+                            
+                            if(itemS.isFree){
+                                tRow += '<td style="background-color: #00ff00">' + itemS.isFree + '</td>'
+                            } else {
+                                tRow += '<td>' + itemS.isFree + '</td>'
+                            }
+                            
+                                    
+                        }
+                        tRow += "</tr>"
+                        tableBody += tRow
+                    }
+                }
+                $("#table_body").html(tableBody)
+            }
+        </script>
+    </head>
+
+    <body>
+        <div id='dummy'></div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">#</th>
+                <th scope="col">08:00</th>
+                <th scope="col">09:00</th>
+                <th scope="col">10:00</th>
+                <th scope="col">11:00</th>
+                <th scope="col">12:00</th>
+                <th scope="col">13:00</th>
+                <th scope="col">14:00</th>
+                <th scope="col">15:00</th>
+                <th scope="col">16:00</th>
+                <th scope="col">17:00</th>
+                <th scope="col">18:00</th>
+                <th scope="col">19:00</th>
+                <th scope="col">20:00</th>
+                <th scope="col">21:00</th>
+              </tr>
+            </thead>
+            <tbody id="table_body">
+            </tbody>
+          </table>
+    </body>
+</html>
