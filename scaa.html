@@ -77,8 +77,8 @@
                     data: JSON.stringify(dataJSON),
                     type: "POST",
                     dataType: "json",
-//                     contentType: "application/json;charset=utf-8",
-                    headers: { 'contentType': 'application/json;charset=utf-8', 'x-channel': 'web'},
+                    contentType: "application/json;charset=utf-8",
+                    headers: { 'x-channel': 'web'},
                     success: function(returnData){
 
                         constructTable(returnData)
